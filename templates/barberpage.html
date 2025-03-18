@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Barber profile</title>
+    <link rel="stylesheet" href="{% static "CSS/barberPage.css" %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        background: #333;
+        color: white;
+        padding: 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
+    .sidebar h2 {
+        text-align: center;
+        font-size: 20px;
+    }
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+    .sidebar ul li {
+        margin: 15px 0;
+    }
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 10px;
+        background: #444;
+        border-radius: 5px;
+        text-align: center;
+    }
+    .sidebar ul li a:hover {
+        background: #555;
+    }
+</style>
+</head>
+<body>
+    {% comment %} {% include "sidebar.html" %} {% endcomment %}
+    
+    <header>
+        <h1>BYB</h1>
+        <nav class="profile-options">
+            <button onclick="location.href='{% url "profilepage" %}'">Create Your Profile</button>
+            {% comment %} <button onclick="location.href='{% url "editprofile" %}'">Edit Your Profile</button> {% endcomment %}
+            <button onclick="location.href='{% url "barber_profile" %}'">Your Profile</button>
+            <button onclick="location.href='{% url "logout" %}'">Logout</button>
+        </nav>
+        
+    </header>
+
+    
+    
+    <section class="motivation">
+        <!-- <img src="image/john-arano-CCTCHXEsan8-unsplash.jpg" alt="Barber Shop"> -->
+        <h2>"A great haircut is a step towards confidence!</h2>
+        <h3>"Book with the best barbers now"</h3>
+    </section>
+
+    <section class="about">
+        <h2>Why Choose Us?</h2>
+        <p>Join us to grow your barbering business! Get more clients, increase your earnings, and showcase your skills on a trusted platform designed to connect you with customers easily.</p>
+    </section>
+    
+    <script src="{% static 'JS/Barberpage.js' %}"></script>
+</body>
+</html>

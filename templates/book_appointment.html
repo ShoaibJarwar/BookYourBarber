@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Appointment</title>
+    <link rel="stylesheet" href="{% static 'CSS/book_appointment.css' %}" />
+  </head>
+  <body>
+    <div class="appointment-container">
+      {% comment %} {% if messages %} {% for message in messages %} {% endcomment %}
+      <p
+        style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};"
+      >
+        {{ message }}
+      </p>
+      {% comment %} {% endfor %} {% endif %} {% endcomment %}
+      <h1>Book an Appointment</h1>
+      <p>Schedule your session with <strong>{{ barber.full_name }}</strong></p>
+
+      <!-- Barber Details -->
+      <div class="barber-info">
+        <p><strong>Shop:</strong> {{ barber.shop_name }}</p>
+        <p>
+          <strong>Available Slots:</strong> {{ barber.available_time_slots }}
+        </p>
+      </div>
+
+      <!-- Appointment Form -->
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="input-group">
+          <label for="appointment_time">Choose Time:</label>
+          <input type="datetime-local" name="appointment_time" required />
+        </div>
+
+        <button type="submit" class="book-btn">Confirm Booking</button>
+      </form>
+
+      {% if success %}
+      <div class="success-message">Appointment booked successfully!</div>
+      {% endif %}
+    </div>
+  </body>
+</html>

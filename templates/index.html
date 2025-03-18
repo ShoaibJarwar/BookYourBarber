@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'CSS/indexstyle.css' %}" />
+    <script>
+      var barberPageUrl = "{% url 'barberpage' %}";
+      var userPageUrl = "{% url 'user' %}";
+    </script>
+    <script src="{% static 'JS/indexjs.js' %}" defer></script>
+  </head>
+  <body >
+    <div class="container">
+      <form id="authForm" method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <section class = "errorMessages">
+          {% if messages %}
+            {% for message in messages %}
+              {% if forloop.last %}
+                <ul style="margin-left: -40px;">
+                <li class="{% if message.tags == 'success' %}successMessages{% else %}errorMessages{% endif %}">
+                    {{ message }}
+                </li>
+                </ul>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </section>
+
+        <h2>Register</h2>
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <select id="userType" name="userType">
+            <option value="user">As a User</option>
+            <option value="barber">As a Barber</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Username"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+        </div>
+
+        <button type="submit" id="registerBtn">Register</button>
+        <p style= "color: #0055AA">
+            Already Registered? 
+            <a href="{% url 'loginView' %}" style = "color:#0055AA;">Login</a>
+        </p>
+      </form>
+    </div>
+  </body>
+</html>

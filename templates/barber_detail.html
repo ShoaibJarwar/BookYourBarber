@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ barber.full_name }} - Barber Details</title>
+    <link rel="stylesheet" href="{% static 'CSS/barber_detail.css' %}">
+</head>
+<body>
+    <div class="barber-container">
+        <h1>{{ barber.full_name }}</h1>
+        <img src="{{ barber.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+        <h2>Shop: {{ barber.shop_name }}</h2>
+        <p><strong>Location:</strong> {{ barber.location }}</p>
+        <p><strong>Phone:</strong> {{ barber.phone_number }}</p>
+        <p><strong>Email:</strong> {{ barber.professional_email }}</p>
+        <img src="{{ barber.shop_banner.url }}" alt="Shop Banner" class="shop-banner">
+
+        <h3>Available Time Slots: {{ barber.available_time_slots }}</h3>
+
+        <h2 class = "service-heading">Services Offered:</h2>
+        <ul class = "service-ul">
+            {% for service in barber.services.all %}
+                <li class = "service-li" >
+                    <strong class = "left">{{ service.service_name }}</strong> <span class = "center">${{ service.price }}</span>
+                    {% if service.service_image %}
+                        <img src="{{ service.service_image.url }}" alt="{{ service.service_name }}" class = "right">
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+        {% comment %} <a href="{% url 'book_appointment' barber.id %}" class="btn">Book an Appointment</a> {% endcomment %}
+    </div>
+</body>
+</html>

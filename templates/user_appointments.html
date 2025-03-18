@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Appointments</title>
+    <link rel="stylesheet" href="{% static 'CSS/user_appointments.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>My Appointment</h1>
+
+      {% if appointment %}
+      <div class="appointment-card">
+        <h2>Confirmed Appointment ✅</h2>
+        <p><strong>Barber:</strong> {{ appointment.barber.full_name }}</p>
+        <p><strong>Shop:</strong> {{ appointment.barber.shop_name }}</p>
+        <p><strong>Date & Time:</strong> {{ appointment.appointment_time }}</p>
+
+        <!-- Display Remaining Time -->
+        <p>
+          <strong>Time Left:</strong>
+          <span id="countdown" data-time="{{remaining_seconds}}"
+            >Calculating...</span
+          >
+        </p>
+      </div>
+
+      <form
+        method="POST"
+        action="{% url 'cancel_appointment' appointment.id %}"
+      >
+        {% csrf_token %}
+        <button type="submit" class="btn-cancel">Cancel Appointment</button>
+        {% comment %} <button>Back</button> {% endcomment %}
+      </form>
+
+      {% else %}
+      <p style="color: red">No appointments found. Book one now!</p>
+      <a href="{% url 'search_barbers' %}" class="btn">Find a Barber</a>
+      {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let countdownElement = document.getElementById("countdown");
+    
+            if (!countdownElement) {
+                console.error("⛔ Countdown element not found!");
+                return;
+            }
+    
+            let countdownInterval;
+    
+            function updateCountdown() {
+                let remainingTime = parseInt(countdownElement.getAttribute("data-time"));
+    
+                if (remainingTime > 0) {
+                    let hours = Math.floor(remainingTime / 3600);
+                    let minutes = Math.floor((remainingTime % 3600) / 60);
+                    let seconds = remainingTime % 60;
+    
+                    countdownElement.innerHTML = `Time Remaining: ${hours}h ${minutes}m ${seconds}s`;
+                    countdownElement.setAttribute("data-time", remainingTime - 1);
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownElement.innerHTML = "Appointment time reached!";
+                }
+            }
+    
+            countdownInterval = setInterval(updateCountdown, 1000);
+            updateCountdown();
+        });
+    </script>
+    
+  </body>
+</html>

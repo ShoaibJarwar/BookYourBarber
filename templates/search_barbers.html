@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Nearby Barbers</title>
+    <link rel="stylesheet" href="{% static 'CSS/find_nearby_barbers.css' %}">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            padding: 12px;
+            width: 70%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-bar button {
+            padding: 12px 20px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 16px;
+        }
+
+        .search-bar button:hover {
+            background: #0056b3;
+        }
+
+        /* Barber Cards */
+        .barber-results {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .barber-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .barber-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .barber-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007BFF;
+        }
+
+        .barber-info {
+            flex-grow: 1;
+        }
+
+        .barber-card h3 {
+            margin: 0;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .barber-card p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #218838;
+        }
+
+        /* No Results Message */
+        .no-results {
+            color: #888;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Find Nearby Barbers</h1>
+        
+        <!-- Search Form -->
+        <form method="POST" action="{% url 'search_barbers' %}" class="search-bar">
+            {% csrf_token %}
+            <input type="text" name="query" placeholder="Enter location..." value="{{ query }}">
+            <button type="submit">🔍 Search</button>
+        </form>
+        
+        {% if barbers %}
+            <h2>Nearby Barbers</h2>
+            <div class="barber-results">
+                {% for barber in barbers %}
+                    <div class="barber-card">
+                        {% if barber.profile_picture %}
+                            <img src="{{ barber.profile_picture.url }}" alt="{{ barber.full_name }}" class="barber-img">
+                        {% else %}
+                            <img src="{% static 'images/default-profile.jpg' %}" alt="Default Profile" class="barber-img">
+                        {% endif %}
+                        <div class="barber-info">
+                            <h3>{{ barber.full_name }}</h3>
+                            <p>🏢 Shop: {{ barber.shop_name }}</p>
+                            <p>✂️ Services: {{ barber.services_title }}</p>
+                        </div>
+                        {% comment %} <a href="{% url 'barber_detail' id=barber.id %}" class="btn">📅 Book Appointment</a> {% endcomment %}
+                        <a href="{% url 'book_appointment' barber.id  %}" class= "btn">📅 Book Now</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-results">⚠️ No barbers found in this location.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
